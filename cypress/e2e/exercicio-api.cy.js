@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+const { faker } = require('@faker-js/faker');
+
 describe('Testes da Funcionalidade Usuários', () => {
 
   let token;
@@ -60,14 +62,26 @@ describe('Testes da Funcionalidade Usuários', () => {
     });
   });
 
-  it('Deve validar um usuário com email inválido', () => {
-    const emailInvalido = "usuario@invalid.com";
-    
+  it('Deve validar um usuário com email duplicado', () => {
+ 
+    const emailDuplicado = faker.internet.email();
+
+ 
     requestApi('POST', baseUrl, {
-      nome: "Usuário com E-mail Inválido",
-      email: emailInvalido,
-      password: "senha123",
-      administrador: "false"
+      nome: faker.person.fullName(),
+      email: emailDuplicado,
+      password: faker.internet.password(),
+      administrador: 'false'
+    }).then((response) => {
+      expect(response.status).to.equal(201);
+    });
+
+
+    requestApi('POST', baseUrl, {
+      nome: faker.person.fullName(),
+      email: emailDuplicado,
+      password: faker.internet.password(),
+      administrador: 'false'
     }, false).then((response) => {
       expect(response.status).to.equal(400);
       expect(response.body.message).to.equal('Este email já está sendo usado');
