@@ -6,13 +6,13 @@ describe('Login', () => {
     before(() => {
       cy.request({
         method: 'POST',
-        url: 'login', // Ajuste conforme a URL da sua API
+        url: 'login', 
         body: {
-          email: "fulano@qa.com", // Substitua pelo email de um usuário válido
-          password: "teste" // Substitua pela senha válida
+          email: "fulano@qa.com", 
+          password: "teste" 
         }
       }).then((response) => {
-        token = response.body.authorization; // Armazenando o token
+        token = response.body.authorization;
       });
     });
   
@@ -31,9 +31,9 @@ describe('Login', () => {
       });
     });
   
-    // Podemos exportar o token para ser utilizado nos outros testes
+  
     after(() => {
-      // Exporta o token globalmente
+     
       Cypress.env('auth_token', token);
     });
   });
